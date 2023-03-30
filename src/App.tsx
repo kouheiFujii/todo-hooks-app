@@ -1,8 +1,17 @@
 import { useState, useCallback, useEffect } from "react";
 import "./App.css";
 
+/**
+ * ライフサイクル
+ * 【リロード】
+ * initial -> initial -> mount -> update -> unmount -> mount -> update
+ * 【レンダリング】一度コンポーネントの再レンダリングが行われるから unmount が実行される
+ * unmount -> mount -> update
+ */
+
 function App() {
   const [todos, setTodos] = useState<string[]>(() => {
+    console.log("initial");
     const storedTodos = localStorage.getItem("todos"); // 初期化時にlocalStorageを確認して、値があればそれを初期値として設定する
     if (storedTodos) {
       return JSON.parse(storedTodos);
@@ -45,6 +54,8 @@ function App() {
    * dependencies: setupを実行する条件。[]の場合,マウントされたときのみ実行される
    */
   useEffect(() => {
+    console.log("mount");
+
     // const storedTodos = localStorage.getItem("todos");
     // if (storedTodos) {
     //   setTodos(JSON.parse(storedTodos));
@@ -56,6 +67,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    console.log("update");
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
 
